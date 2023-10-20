@@ -1,9 +1,9 @@
 const express = require("express");
 const Model = require("../model/model");
-
+const bodyParser = require("body-parser");
 const router = express.Router();
 
-router.post("/post", async (req, res) => {
+router.post("/post", bodyParser.json(), async (req, res) => {
   console.log(req);
   const data = new Model({
     name: req.body.name,
@@ -17,8 +17,13 @@ router.post("/post", async (req, res) => {
   }
 });
 
-router.get("/getAll", (req, res) => {
-  res.send("Get All API");
+router.get("/getAll", async (req, res) => {
+  try {
+    const data = await Model.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 module.exports = router;
