@@ -4,10 +4,10 @@ const bodyParser = require("body-parser");
 const router = express.Router();
 
 router.post("/post", bodyParser.json(), async (req, res) => {
-  console.log(req);
   const data = new Model({
     name: req.body.name,
     time: req.body.time,
+    level: req.body.level,
   });
   try {
     const dataToSave = await data.save();
@@ -17,10 +17,12 @@ router.post("/post", bodyParser.json(), async (req, res) => {
   }
 });
 
-router.get("/getAll", async (req, res) => {
+router.get("/getAll/:level", async (req, res) => {
+  console.log(req.params.level);
   try {
     const data = await Model.find();
-    res.json(data);
+    const newData = data.filter((obj) => obj.level === req.params.level);
+    res.json(newData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
