@@ -13,6 +13,10 @@ const dataSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  customDifficulty: {
+    required: false,
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("Data", dataSchema);
